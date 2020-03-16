@@ -1,12 +1,14 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request,app
 import pandas as pd
 import numpy  as np
-import seaborn
 import copy
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from scipy.stats import poisson,skellam
 import goals
+import seaborn
+import matplotlib.pyplot as plt
+from pandas._libs import json
 
 app = Flask(__name__)
 
@@ -178,8 +180,6 @@ def prob_report(expected):
 
     return home_win,hgoal.Home,hgoal.Away,away_win,agoal.Home,agoal.Away,draw,dgoal.Home,dgoal.Away
 
-
-
 @app.route('/predict', methods=['GET'])
 def predict():
     home=request.args.get('home')
@@ -207,6 +207,158 @@ def predict():
                           'Awaygoals': str(dga)}
                      }
                    )
+
+#_________________________________________________________________________________________________________
+def read_Dataset():
+    df = pd.read_csv("Recommend_Dataset/FIFA2019.csv")
+    df.head(7)
+    return df
+
+def get_ClubPlayers(dataset,teamName):
+    dataset=dataset[dataset.get('Club') == teamName]
+    return dataset
+
+def find_BestGoalkeeper(df):
+    # weights
+    a = 0.5
+    b = 1
+    c = 2
+    d = 3
+
+    # GoalKeeping Characterstics
+    df['gk_Shot_Stopper']=(b * df.Reactions + b * df.Composure + a * df.Speed + a * df.Strength + c * df.Jumping + b * df.GK_Positioning + c * df.GK_Diving + d * df.GK_Reflexes + b * df.GK_Handling) / ( 2 * a + 4 * b + 2 * c + 1 * d)
+    df['gk_Sweeper']=(b * df.Reactions + b * df.Composure + b * df.Speed + a * df.Short_Pass + a * df.Long_Pass + b * df.Jumping + b * df.GK_Positioning + b * df.GK_Diving + d * df.GK_Reflexes + b * df.GK_Handling + d * df.GK_Kicking + c * df.Vision) / (2 * a + 4 * b + 3 * c + 2 * d)
+
+    gss= df[(df['Club_Position'] == 'GK')].sort_values('gk_Shot_Stopper', ascending=False)[:3]
+    x1Names = np.array(list(gss['Name']))
+    x1Photos = np.array(list(gss['Photo']))
+    x1Numbers = np.array(list(gss['Club_Number']))
+
+    gs = df[(df['Club_Position'] == 'GK')].sort_values('gk_Sweeper', ascending=False)[:3]
+    x2Names = np.array(list(gs['Name']))
+    x2Photos = np.array(list(gs['Photo']))
+    x2Numbers = np.array(list(gs['Club_Number']))
+
+    return x1Names,x1Photos,x1Numbers,x2Names,x2Photos,x2Numbers
+
+def find_BestDefenders(df):
+    a = 0.5
+    b = 1
+    c = 2
+    d = 3
+
+    # Choosing Defenders
+    df['df_centre_backs'] = (d* df.Positioning +d * df.Reactions + c * df.Interceptions + d * df.Sliding_Tackle + d * df.Standing_Tackle + b * df.Vision + b * df.Composure + b * df.Crossing + a * df.Short_Pass + b * df.Long_Pass + c * df.Acceleration + b * df.Speed+ d * df.Stamina + d * df.Jumping + d * df.Heading + b * df.Long_Shots + d * df.Marking + c * df.Aggression) / (6 * b + 3 * c + 8 * d)
+    df['df_wb_Wing_Backs'] = (b * df.Ball_Control + a * df.Dribbling + a * df.Marking + d * df.Sliding_Tackle + d * df.Standing_Tackle + c * df.Vision + c * df.Crossing + b * df.Short_Pass + c * df.Long_Pass + d * df.Acceleration + d * df.Speed + c * df.Stamina + a * df.Finishing) / (3 * a + 2 * b + 4 * c + 4 * d)
+
+    lcb = df[(df['Club_Position'] == 'LCB')|(df['Club_Position'] == 'CB')].sort_values('df_centre_backs', ascending=False)[:4]
+    x1Name = np.array(list(lcb['Name']))
+    x1Photo = np.array(list(lcb['Photo']))
+    x1Number = np.array(list(lcb['Club_Number']))
+
+    rcb = df[(df['Club_Position'] == 'RCB')|(df['Club_Position'] == 'CB')].sort_values('df_centre_backs', ascending=False)[:4]
+    x2Name = np.array(list(rcb['Name']))
+    x2Photo = np.array(list(rcb['Photo']))
+    x2Number = np.array(list(rcb['Club_Number']))
+
+    lwb = df[(df['Club_Position'] == 'LWB') | (df['Club_Position'] == 'LB')].sort_values('df_wb_Wing_Backs', ascending=False)[:4]
+    x3Name = np.array(list(lwb['Name']))
+    x3Photo = np.array(list(lwb['Photo']))
+    x3Number = np.array(list(lwb['Club_Number']))
+
+    rwb = df[(df['Club_Position'] == 'RWB') | (df['Club_Position'] == 'RB')].sort_values('df_wb_Wing_Backs',ascending=False)[:4]
+    x4Name = np.array(list(rwb['Name']))
+    x4Photo = np.array(list(rwb['Photo']))
+    x4Number = np.array(list(rwb['Club_Number']))
+
+    return x1Name,x1Photo,x1Number,x2Name,x2Photo,x2Number,x3Name,x3Photo,x3Number,x4Name,x4Photo,x4Number
+
+def find_BestMidFielders(df):
+    # weights
+    a = 0.5
+    b = 1
+    c = 2
+    d = 3
+
+    df['mf_playmaker'] = (d * df.Ball_Control + d * df.Dribbling + a * df.Marking + d * df.Reactions + d * df.Vision + c * df.Crossing + d * df.Short_Pass + c * df.Long_Pass + c * df.Curve + b * df.Long_Shots + c * df.Freekick_Accuracy) / (1 * a + 1 * b + 3 * c + 4 * d)
+    df['mf_beast'] = ( d * df.Agility + c * df.Balance + b * df.Jumping + c * df.Strength + d * df.Stamina + a * df.Speed + c * df.Acceleration + d * df.Short_Pass + c * df.Aggression + d * df.Reactions + b * df.Marking + b * df.Standing_Tackle + b * df.Sliding_Tackle + b * df.Interceptions) / (1 * a + 5 * b + 4 * c + 4 * d)
+    df['mf_controller'] = (b * df.Weak_foot + d * df.Ball_Control + a * df.Dribbling + a * df.Marking + a * df.Reactions + c * df.Vision + c * df.Composure + d * df.Short_Pass + d * df.Long_Pass) / (2 * c + 3 * d + 4 * a)
+
+    plt.figure(figsize=(15, 6))
+
+    cam = df[(df['Club_Position'] == 'CM')|(df['Club_Position'] == 'CAM') | (df['Club_Position'] == 'LAM') | (df['Club_Position'] == 'RAM')].sort_values('mf_playmaker', ascending=False)[:4]
+    x1Name = np.array(list(cam['Name']))
+    x1Photo = np.array(list(cam['Photo']))
+    x1Number = np.array(list(cam['Club_Number']))
+
+    rcm = df[(df['Club_Position'] == 'RDM')|(df['Club_Position'] == 'CDM')|(df['Club_Position'] == 'RCM')|(df['Club_Position'] == 'CM')].sort_values('mf_beast', ascending=False)[:4]
+    x2Name = np.array(list(rcm['Name']))
+    x2Photo = np.array(list(rcm['Photo']))
+    x2Number = np.array(list(rcm['Club_Number']))
+
+    lcm = df[(df['Club_Position'] == 'LDM')|(df['Club_Position'] == 'CDM')|(df['Club_Position'] == 'LCM')|(df['Club_Position'] == 'CM')].sort_values('mf_controller',ascending=False)[:4]
+    x3Name = np.array(list(lcm['Name']))
+    x3Photo = np.array(list(lcm['Photo']))
+    x3Number = np.array(list(lcm['Club_Number']))
+    return x1Name,x1Photo,x1Number,x2Name,x2Photo,x2Number,x3Name,x3Photo,x3Number
+
+def find_BestAttackers(df):
+    # weights
+    a = 0.5
+    b = 1
+    c = 2
+    d = 3
+
+    df['att_left_wing'] = (c * df.Weak_foot + c * df.Ball_Control + c * df.Dribbling + c * df.Speed + d * df.Acceleration + b * df.Vision + c * df.Crossing + b * df.Short_Pass + b * df.Long_Pass + b * df.Aggression + b * df.Agility + a * df.Curve + c * df.Long_Shots + b * df.Freekick_Accuracy + d * df.Finishing) / (a + 6 * b + 6 * c + 2 * d)
+    df['att_right_wing'] = ( c * df.Weak_foot + c * df.Ball_Control + c * df.Dribbling + c * df.Speed + d * df.Acceleration + b * df.Vision + c * df.Crossing + b * df.Short_Pass + b * df.Long_Pass + b * df.Aggression + b * df.Agility + a * df.Curve + c * df.Long_Shots + b * df.Freekick_Accuracy + d * df.Finishing) / ( a + 6 * b + 6 * c + 2 * d)
+    df['att_striker'] = ( b * df.Weak_foot + b * df.Ball_Control + a * df.Vision + b * df.Aggression + b * df.Agility + a * df.Curve + a * df.Long_Shots + d * df.Balance + d * df.Finishing + d * df.Heading + c * df.Jumping + c * df.Dribbling) / (3 * a + 4 * b + 2 * c + 3 * d)
+
+    lw = df[(df['Club_Position'] == 'LW') | (df['Club_Position'] == 'LM') | (df['Club_Position'] == 'LS')|(df['Club_Position'] == 'LF')].sort_values('att_left_wing', ascending=False)[:4]
+    x1Name = np.array(list(lw['Name']))
+    x1Photo = np.array(list(lw['Photo']))
+    x1Number = np.array(list(lw['Club_Number']))
+
+    rw = df[(df['Club_Position'] == 'RW') | (df['Club_Position'] == 'RM') | (df['Club_Position'] == 'RS')|(df['Club_Position'] == 'RF')].sort_values('att_right_wing', ascending=False)[:4]
+    x2Name = np.array(list(rw['Name']))
+    x2Photo = np.array(list(rw['Photo']))
+    x2Number = np.array(list(rw['Club_Number']))
+
+    plt.figure(figsize=(15, 6))
+    st = df[(df['Club_Position'] == 'ST') | (df['Club_Position'] == 'LS') | (df['Club_Position'] == 'RS') | (df['Club_Position'] == 'CF')].sort_values('att_striker', ascending=False)[:4]
+    x3Name = np.array(list(st['Name']))
+    x3Photo = np.array(list(st['Photo']))
+    x3Number = np.array(list(st['Club_Number']))
+
+    return x1Name,x1Photo,x1Number,x2Name,x2Photo,x2Number,x3Name,x3Photo,x3Number
+
+@app.route("/recommend", methods=['GET'])
+def recommend():
+    dataset = read_Dataset()
+    teamName = request.args.get('team')
+    dataset = get_ClubPlayers(dataset, teamName)
+    gssName,gssPhoto,gssNumber,gsName,gsPhoto,gsNumber=find_BestGoalkeeper(dataset)
+    lcbName,lcbPhoto,lcbNumber,rcbName,rcbPhoto,rcbNumber,lwbName,lwbPhoto,lwbNumber,rwbName,rwbPhoto,rwbNumber=find_BestDefenders(dataset)
+    camName,camPhoto,camNumber,rcmName,rcmPhoto,rcmNumber,lcmName,lcmPhoto,lcmNumber=find_BestMidFielders(dataset)
+    lwName,lwPhoto,lwNumber,rwName,rwPhoto,rwNumber,stName,stPhoto,stNumber=find_BestAttackers(dataset)
+    return  jsonify([{"GOALKEEPERS":[{"SHOTS STOPPING":{"Names":json.dumps(gssName),"Photos":json.dumps(gssPhoto),"Numbers":json.dumps(gssNumber)}},
+                                     {"SWEEPING":{"Names":json.dumps(gsName),"Photos":json.dumps(gsPhoto),"Numbers":json.dumps(gsNumber)}}]
+                      },
+                     {"Defenders":[{"Left Central Defender":{"Names":json.dumps(lcbName),"Photos":json.dumps(lcbPhoto),"Numbers":json.dumps(lcbNumber)}},
+                                   {"Right Central Defender":{"Names":json.dumps(rcbName),"Photos":json.dumps(rcbPhoto),"Numbers":json.dumps(rcbNumber)}},
+                                   {"LEFT WING BACK":{"Names":json.dumps(lwbName),"Photos":json.dumps(lwbPhoto),"Numbers":json.dumps(lwbNumber)}},
+                                   {"RIGHT WING BACK":{"Names":json.dumps(rwbName),"Photos":json.dumps(rwbPhoto),"Numbers":json.dumps(rwbNumber)}}]
+                     },
+                     {"Mid-Fielders":[{"PlayMakers":{"Names":json.dumps(camName),"Photos":json.dumps(camPhoto),"Numbers":json.dumps(camNumber)}},
+                                      {"Beast":{"Names":json.dumps(rcmName),"Photos":json.dumps(rcmPhoto),"Numbers":json.dumps(rcmNumber)}},
+                                      {"Controller":{"Names":json.dumps(lcmName),"Photos":json.dumps(lcmPhoto),"Numbers":json.dumps(lcmNumber)}}]
+                     },
+                     {"ATTACKERS":[{"Left Wing":{"Names":json.dumps(lwName),"Photos":json.dumps(lwPhoto),"Numbers":json.dumps(lwNumber)}},
+                                   {"Right Wing":{"Names":json.dumps(rwName),"Photos":json.dumps(rwPhoto),"Numbers":json.dumps(rwNumber)}},
+                                   {"Striker":{"Names":json.dumps(stName),"Photos":json.dumps(stPhoto),"Numbers":json.dumps(stNumber)}}]
+                     }
+                     ])
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
