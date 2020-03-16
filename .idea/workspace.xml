@@ -15,23 +15,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ai.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="334" column="10" selection-start-line="334" selection-start-column="10" selection-end-line="334" selection-end-column="10" />
+            <state relative-caret-position="75">
+              <caret line="329" column="48" lean-forward="true" selection-start-line="329" selection-start-column="48" selection-end-line="329" selection-end-column="48" />
               <folding>
-                <element signature="e#295#856#0" />
-                <element signature="e#931#1662#0" />
-                <element signature="e#1687#4455#0" />
-                <element signature="e#4485#7274#0" />
-                <element signature="e#7317#7717#0" />
-                <element signature="e#7750#8629#0" />
                 <element signature="e#8763#9809#0" />
-                <element signature="e#8729#8808#0" />
-                <element signature="e#8853#8920#0" />
-                <element signature="e#8955#10083#0" />
-                <element signature="e#10117#12057#0" />
-                <element signature="e#12093#14044#0" />
-                <element signature="e#14078#16172#0" />
-                <element signature="e#16343#18761#0" />
               </folding>
             </state>
           </provider>
@@ -45,6 +32,11 @@
         <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>sns</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,8 +59,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -148,23 +140,10 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/ai.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="334" column="10" selection-start-line="334" selection-start-column="10" selection-end-line="334" selection-end-column="10" />
+        <state relative-caret-position="75">
+          <caret line="329" column="48" lean-forward="true" selection-start-line="329" selection-start-column="48" selection-end-line="329" selection-end-column="48" />
           <folding>
-            <element signature="e#295#856#0" />
-            <element signature="e#931#1662#0" />
-            <element signature="e#1687#4455#0" />
-            <element signature="e#4485#7274#0" />
-            <element signature="e#7317#7717#0" />
-            <element signature="e#7750#8629#0" />
             <element signature="e#8763#9809#0" />
-            <element signature="e#8729#8808#0" />
-            <element signature="e#8853#8920#0" />
-            <element signature="e#8955#10083#0" />
-            <element signature="e#10117#12057#0" />
-            <element signature="e#12093#14044#0" />
-            <element signature="e#14078#16172#0" />
-            <element signature="e#16343#18761#0" />
           </folding>
         </state>
       </provider>

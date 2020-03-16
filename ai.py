@@ -6,7 +6,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from scipy.stats import poisson,skellam
 import goals
-import seaborn as sns
+import seaborn
 import matplotlib.pyplot as plt
 from pandas._libs import json
 
