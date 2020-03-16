@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1aa1249a-fd52-4ba8-8682-aba1224a79df" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ai.py" beforeDir="false" afterPath="$PROJECT_DIR$/ai.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ai.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+            <state relative-caret-position="441">
+              <caret line="334" column="10" selection-start-line="334" selection-start-column="10" selection-end-line="334" selection-end-column="10" />
               <folding>
                 <element signature="e#295#856#0" />
                 <element signature="e#931#1662#0" />
@@ -27,7 +24,14 @@
                 <element signature="e#4485#7274#0" />
                 <element signature="e#7317#7717#0" />
                 <element signature="e#7750#8629#0" />
-                <element signature="e#8692#9738#0" />
+                <element signature="e#8763#9809#0" />
+                <element signature="e#8729#8808#0" />
+                <element signature="e#8853#8920#0" />
+                <element signature="e#8955#10083#0" />
+                <element signature="e#10117#12057#0" />
+                <element signature="e#12093#14044#0" />
+                <element signature="e#14078#16172#0" />
+                <element signature="e#16343#18761#0" />
               </folding>
             </state>
           </provider>
@@ -63,8 +67,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -144,8 +148,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/ai.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+        <state relative-caret-position="441">
+          <caret line="334" column="10" selection-start-line="334" selection-start-column="10" selection-end-line="334" selection-end-column="10" />
           <folding>
             <element signature="e#295#856#0" />
             <element signature="e#931#1662#0" />
@@ -153,7 +157,14 @@
             <element signature="e#4485#7274#0" />
             <element signature="e#7317#7717#0" />
             <element signature="e#7750#8629#0" />
-            <element signature="e#8692#9738#0" />
+            <element signature="e#8763#9809#0" />
+            <element signature="e#8729#8808#0" />
+            <element signature="e#8853#8920#0" />
+            <element signature="e#8955#10083#0" />
+            <element signature="e#10117#12057#0" />
+            <element signature="e#12093#14044#0" />
+            <element signature="e#14078#16172#0" />
+            <element signature="e#16343#18761#0" />
           </folding>
         </state>
       </provider>
