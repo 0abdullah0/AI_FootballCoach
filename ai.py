@@ -340,23 +340,97 @@ def recommend():
     lcbName,lcbPhoto,lcbNumber,rcbName,rcbPhoto,rcbNumber,lwbName,lwbPhoto,lwbNumber,rwbName,rwbPhoto,rwbNumber=find_BestDefenders(dataset)
     camName,camPhoto,camNumber,rcmName,rcmPhoto,rcmNumber,lcmName,lcmPhoto,lcmNumber=find_BestMidFielders(dataset)
     lwName,lwPhoto,lwNumber,rwName,rwPhoto,rwNumber,stName,stPhoto,stNumber=find_BestAttackers(dataset)
-    return  jsonify([{"GOALKEEPERS":[{"SHOTS STOPPING":{"Names":json.dumps(gssName),"Photos":json.dumps(gssPhoto),"Numbers":json.dumps(gssNumber)}},
-                                     {"SWEEPING":{"Names":json.dumps(gsName),"Photos":json.dumps(gsPhoto),"Numbers":json.dumps(gsNumber)}}]
-                      },
-                     {"Defenders":[{"Left Central Defender":{"Names":json.dumps(lcbName),"Photos":json.dumps(lcbPhoto),"Numbers":json.dumps(lcbNumber)}},
-                                   {"Right Central Defender":{"Names":json.dumps(rcbName),"Photos":json.dumps(rcbPhoto),"Numbers":json.dumps(rcbNumber)}},
-                                   {"LEFT WING BACK":{"Names":json.dumps(lwbName),"Photos":json.dumps(lwbPhoto),"Numbers":json.dumps(lwbNumber)}},
-                                   {"RIGHT WING BACK":{"Names":json.dumps(rwbName),"Photos":json.dumps(rwbPhoto),"Numbers":json.dumps(rwbNumber)}}]
-                     },
-                     {"Mid-Fielders":[{"PlayMakers":{"Names":json.dumps(camName),"Photos":json.dumps(camPhoto),"Numbers":json.dumps(camNumber)}},
-                                      {"Beast":{"Names":json.dumps(rcmName),"Photos":json.dumps(rcmPhoto),"Numbers":json.dumps(rcmNumber)}},
-                                      {"Controller":{"Names":json.dumps(lcmName),"Photos":json.dumps(lcmPhoto),"Numbers":json.dumps(lcmNumber)}}]
-                     },
-                     {"ATTACKERS":[{"Left Wing":{"Names":json.dumps(lwName),"Photos":json.dumps(lwPhoto),"Numbers":json.dumps(lwNumber)}},
-                                   {"Right Wing":{"Names":json.dumps(rwName),"Photos":json.dumps(rwPhoto),"Numbers":json.dumps(rwNumber)}},
-                                   {"Striker":{"Names":json.dumps(stName),"Photos":json.dumps(stPhoto),"Numbers":json.dumps(stNumber)}}]
-                     }
-                     ])
+ return  jsonify({"Formation":[
+        {"GoalKeeper":
+            {
+                "Name":gssName[0],
+                "Photos":gssPhoto[0],
+                "Numbers":gssNumber[0],
+                "Position":"GOALKEEPER"
+             },
+        },
+        {"Left Central Defender":
+            {
+                "Name": lcbName[0],
+                "Photos": lcbPhoto[0],
+                "Numbers": lcbNumber[0],
+                "Position": "Left Central Defender"
+            },
+        },
+        {"Right Central Defender":
+            {
+                "Name": rcbName[0],
+                "Photos": rcbPhoto[0],
+                "Numbers": rcbNumber[0],
+                "Position": "Right Central Defender"
+            },
+        },
+        {"Left Wing Back":
+            {
+                "Name": lwbName[0],
+                "Photos": lwbPhoto[0],
+                "Numbers": lwbNumber[0],
+                "Position": "Left Wing Back"
+            },
+        },
+        {"Right Wing Back":
+            {
+                "Name": rwbName[0],
+                "Photos": rwbPhoto[0],
+                "Numbers": rwbNumber[0],
+                "Position": "Right Wing Back"
+            },
+        },
+        {"PlayMaker Mid_Fielders":
+            {
+                "Name": camName[0],
+                "Photos": camPhoto[0],
+                "Numbers": camNumber[0],
+                "Position": "PlayMaker Mid_Fielders"
+            },
+        },
+        {"Beast Mid_Fielders":
+            {
+                "Name": rcmName[0],
+                "Photos": rcmPhoto[0],
+                "Numbers": rcmNumber[0],
+                "Position": "Beast Mid_Fielders"
+            },
+        },
+        {"Controller Mid_Fielders":
+            {
+                "Name": lcmName[0],
+                "Photos": lcmPhoto[0],
+                "Numbers": lcmNumber[0],
+                "Position": "Controller Mid_Fielders"
+            },
+        },
+        {"Left Wing Attacker":
+            {
+                "Name": lwName[0],
+                "Photos": lwPhoto[0],
+                "Numbers": lwNumber[0],
+                "Position": "Left Wing Attacker"
+            },
+        },
+        {"Right Wing Attacker":
+            {
+                "Name": rwName[0],
+                "Photos": rwPhoto[0],
+                "Numbers": rwNumber[0],
+                "Position": "Right Wing Attacker"
+            },
+        },
+        {"Striker Attacker":
+            {
+                "Name": stName[0],
+                "Photos": stPhoto[0],
+                "Numbers": stNumber[0],
+                "Position": "Striker Attacker"
+            },
+        },
+        ]
+    })
 
 
 
