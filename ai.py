@@ -196,16 +196,16 @@ def predict():
                           'Homegoals': str(hgh),
                           'Awaygoals': str(hga)}
                      },
-                    {'Away Win':
+                    'Away Win':
                          {'Percentage': str(round(awin, 2) * 100),
                           'Homegoals': str(agh),
                           'Awaygoals': str(aga)}
                      },
-                    {'Draw':
+                    'Draw':
                          {'Percentage': str(round(draw, 2) * 100),
                           'Homegoals': str(dgh),
                           'Awaygoals': str(dga)}
-                     }
+                     }}
                    )
 
 #_________________________________________________________________________________________________________
