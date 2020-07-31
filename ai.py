@@ -191,21 +191,16 @@ def predict():
     p = Poisson_model(dataset, home, away)
     expected = simulate_match(p, home, away, max_goals=10)
     hwin,hgh,hga,awin,agh,aga,draw,dgh,dga=prob_report(expected)
-    return jsonify({'Home Win':
-                         {'Percentage': str(round(hwin, 2) * 100),
-                          'Homegoals': str(hgh),
-                          'Awaygoals': str(hga)}
-                     },
-                    'Away Win':
-                         {'Percentage': str(round(awin, 2) * 100),
-                          'Homegoals': str(agh),
-                          'Awaygoals': str(aga)}
-                     },
-                    'Draw':
-                         {'Percentage': str(round(draw, 2) * 100),
-                          'Homegoals': str(dgh),
-                          'Awaygoals': str(dga)}
-                     }}
+    return jsonify({'HomeWin_Percentage': str(round(hwin, 2) * 100),
+                    'HomeWin_Homegoals' : str(hgh),
+                    'HomeWin_Awaygoals' : str(hga),
+                    'AwayWin_Percentage': str(round(awin, 2) * 100),
+                    'AwayWin_Homegoals': str(agh),
+                    'AwayWin_Awaygoals': str(aga),
+                    'Draw_Percentage': str(round(draw, 2) * 100),
+                    'Draw_Homegoals': str(dgh),
+                    'Draw_Awaygoals': str(dga)
+                     }
                    )
 
 #_________________________________________________________________________________________________________
