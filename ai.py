@@ -126,7 +126,7 @@ def get_history(team):
     season1819 = season1819[['HomeTeam', 'AwayTeam', 'FTHG', 'FTAG','FTR']]
     season1819 = season1819.rename(columns={'FTHG': 'HomeGoals', 'FTAG': 'AwayGoals','FTR': 'Results'})
 
-    frames = [season1112,season1213,season1314,season1415,season1516,season1617,season1718]
+    frames = [season0910,season1011,season1112,season1213,season1314,season1415,season1516,season1617,season1718,season1819]
     result = pd.concat(frames)
 
     home_hist = result[result.get('HomeTeam') == team]
