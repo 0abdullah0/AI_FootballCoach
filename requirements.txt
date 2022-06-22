@@ -15,7 +15,7 @@ virtualenv==20.0.10
 wrapt==1.11.1
 zipp==3.1.0
 Flask==1.1.1
-numpy==1.14.0
+numpy==1.22.0
 pandas==0.22.0
 statsmodels==0.9.0
 seaborn==0.10.0
